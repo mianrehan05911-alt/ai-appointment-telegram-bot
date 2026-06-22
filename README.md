@@ -1,77 +1,99 @@
-🤖 Telegram → Google Sheets → Google Calendar → Gmail Automation (n8n)
-📌 Project Overview
+# 🤖 Telegram Appointment Booking Automation (n8n)
 
-This project demonstrates an end-to-end automation workflow built using n8n that integrates Telegram, Google Sheets, Google Calendar, and Gmail.
+## 📌 Overview
+This project is an end-to-end automation system built using **n8n** that connects Telegram with Google Sheets, Google Calendar, and Gmail.
 
-The workflow automatically:
+It automates the complete appointment booking process — from user interaction to scheduling and confirmation — without any manual work.
 
-Receives messages from Telegram
-Stores structured data in Google Sheets
-Creates events in Google Calendar
-Sends confirmation emails via Gmail
+---
 
-This project is created for learning, practice, and portfolio purposes, showcasing real-world automation use cases.
+## ⚙️ What This System Does
 
-🔧 Tools & Technologies Used
-n8n – Workflow automation platform
-Telegram Bot API – Incoming user messages
-Google Sheets API – Data storage
-Google Calendar API – Event scheduling
-Gmail API – Email notifications
-⚙️ Workflow Explanation
-Telegram Trigger
-A Telegram bot listens for incoming messages from users.
-Data Processing in n8n
-Messages are parsed and required fields are extracted.
-Google Sheets Integration
-Data is stored as a new row for each request.
-Google Calendar Integration
-Calendar events are created automatically using extracted data.
-Gmail Notification
-A confirmation email is sent to the user.
-📂 Repository Structure
-├── workflow.json          # Exported n8n workflow
-├── README.md              # Project documentation
-├── telegram_chat.png      # Telegram interaction screenshot
-├── n8n_workflow.png       # n8n workflow canvas screenshot
-├── google_sheets.png      # Google Sheets data screenshot
-├── google_calendar.png    # Google Calendar event screenshot
-└── gmail_sent.png         # Gmail confirmation email screenshot
-🖼️ Screenshots Upload Note (Important)
+- Receives booking requests from Telegram
+- Collects user details through chat
+- Stores data in Google Sheets
+- Checks and creates events in Google Calendar
+- Sends confirmation emails via Gmail
 
-Due to an upload issue, screenshots were not placed inside a single screenshots/ folder.
+---
 
-Current screenshot status:
-Screenshots are uploaded individually in the root directory
-Each screenshot is clearly named to indicate its purpose
-No screenshot data is missing
-Reason:
-Screenshots were added after the initial JSON upload
-They were uploaded one by one instead of inside a folder
+## 🔧 Tools & Technologies
 
-This does not affect the functionality of the workflow.
-The workflow.json file remains the primary functional asset.
+- n8n (Workflow Automation)
+- Telegram Bot API
+- Google Sheets API
+- Google Calendar API
+- Gmail API
 
-🚀 How to Use This Workflow
-Download or clone this repository
-Import workflow.json into your n8n instance
-Configure credentials:
-Telegram Bot
-Google Sheets
-Google Calendar
-Gmail
-Activate the workflow
-Send a test message via Telegram
-🎯 Project Purpose
-Learn and practice automation with n8n
-Understand API-based integrations
-Build a practical automation portfolio
-📌 Notes
-Credentials are not included for security reasons
-Screenshots are provided only for demonstration
-Workflow can be extended with validation or AI agents
-✅ Conclusion
+---
 
-This automation shows how multiple services can be connected into a single, efficient workflow using n8n.
-Even with screenshots uploaded individually, the project remains complete, functional, and well-documented.
+## 🔄 Workflow Summary
 
+1. User sends message on Telegram bot  
+2. Bot collects required information (name, email, date, reason)  
+3. Data is processed inside n8n workflow  
+4. Information is stored in Google Sheets  
+5. Appointment is created in Google Calendar  
+6. Confirmation email is sent to client and doctor  
+
+---
+
+## 📂 Repository Structure
+
+workflow.json → Exported n8n workflow  
+README.md → Project documentation  
+telegram-booking-flow-1.png → Telegram chat flow (part 1)  
+telegram-booking-flow-2.png → Telegram chat flow (part 2)  
+google-sheets-log.png → Stored booking data  
+google-calendar-event.png → Created calendar event  
+confirmation-email-for-client.png → Email sent to client  
+confirmation-email-for-doctor.png → Email sent to doctor  
+
+---
+
+## 🖼️ Screenshots Note
+
+Screenshots are uploaded individually in the repository root and show
+the complete working flow of the automation system.
+
+---
+
+## 🎯 Purpose of Project
+
+- Learn real-world workflow automation using n8n  
+- Integrate multiple APIs into one system  
+- Build portfolio-ready automation projects  
+- Simulate production-level booking system  
+
+---
+
+## 📌 Key Highlights
+
+- Fully automated appointment booking system  
+- No manual intervention required after setup  
+- Multi-step Telegram conversational flow  
+- Real-time calendar conflict handling  
+- Automated email notifications  
+
+---
+
+## 🚀 How to Use
+
+1. Import `workflow.json` into n8n  
+2. Connect credentials:
+   - Telegram Bot
+   - Google Sheets
+   - Google Calendar
+   - Gmail  
+3. Activate workflow  
+4. Start chatting with Telegram bot  
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates a real-world automation pipeline where multiple services
+are connected into a single intelligent workflow using n8n.
+
+It is designed as a portfolio project to showcase automation, API integration,
+and workflow engineering skills.
