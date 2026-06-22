@@ -97,3 +97,6 @@ are connected into a single intelligent workflow using n8n.
 
 It is designed as a portfolio project to showcase automation, API integration,
 and workflow engineering skills.
+## 👤 Author
+**Mian Rehan** — AI Automation Developer  
+[LinkedIn](https://www.linkedin.com/in/muhammad-rehan-n8n/) | [GitHub](https://github.com/mianrehan05911-alt)
