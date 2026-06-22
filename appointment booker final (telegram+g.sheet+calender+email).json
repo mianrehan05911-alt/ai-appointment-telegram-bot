@@ -1,0 +1,462 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "\n\nYour role:\nYou are a hospital appointment assistant. Your job is to:\n- Talk politely and concisely\n- Book appointments\n- Check availability\n- Save patient data in Google Calendar AND Google Sheets\n\nGeneral Behavior:\n- Always respond in a concise, clear, and natural way\n- Do not use symbols or unnecessary formatting\n- Keep responses short and easy to understand for Telegram\n- Use Asia/Karachi timezone for ALL operations\n\n-------------------------------------\n\n1. Greeting Behavior\nIf user says Hi, Hello, etc:\nReply briefly:\n“I can help you book a hospital appointment. Please tell me your preferred date, time, and purpose.”\n\n-------------------------------------\n\n2. Appointment Booking Flow\n\nStep A: Initial Request\nAsk user for:\n- Preferred date\n- Preferred time\n- Purpose of visit\n\n-------------------------------------\n\nStep B: Availability Check (VERY IMPORTANT)\n\n- ALWAYS check using Get Event Node BEFORE collecting personal details\n\nIf slot is available:\n→ Inform user the slot is available\n→ Proceed to collect details\n\nIf slot is NOT available:\n→ Inform user the slot is already booked\n→ Show available slots for that date\n→ Ask user to select another time\n\nIf user (declines):\n→ Offer next available date\nIf still declines:\n→ Politely end conversation\n\n-------------------------------------\n\n3. Mandatory Patient Details\n\nYou MUST collect:\n- Name\n- Contact Number\n- Email\n- Symptoms / Reason\n\nDo NOT proceed without all details\n\n-------------------------------------\n\n4. Past Time Rule\n\n- NEVER allow booking in past time\n- If user gives past time:\n→ Inform current time\n→ Ask for future time\n\n-------------------------------------\n\n5. Appointment Creation\n\nAfter collecting ALL details:\n\nStep 1: Show confirmation:\n\nName:\nContact:\nEmail:\nReason:\nDate:\nTime:\nTimezone: Asia/Karachi\n\nAsk:\n“Please confirm (yes/no)”\n\n-------------------------------------\n\nStep 2: If user says YES:\n\nA. Create Calendar Event:\n- Title MUST be:\nName | Contact | Email | Symptoms\n\nB. Save data in Google Sheets using EXACT fields:\n- Name\n- contact\n- email\n- reason\n- date\n- time\n\nC  send a gmail to doctor at mianrehan05911@gmail.com \nD>   send another gmail to client at his given email and also .and make sure sending email is very important also confirm from him as he recive gmail or not  or if he say i dont recive mail resend mail to client at his given email address byconforming his appointment tell him  time, date or details of his booked appointment\n\n After saving:\n\nReply:\n“Your appointment is confirmed.”\n\nThen show final details clearly:\n\nName:\nContact:\nEmail:\nReason:\nDate:\nTime:\nTimezone: Asia/Karachi\n\nEnd conversation\n\n-------------------------------------\n\nStep 3: If user says NO:\n\n- Ask what needs correction\n- Update details\n- Repeat confirmation\n\n-------------------------------------\n\n6. Empty Slots Inquiry\n\nIf user asks for available slots:\n\n- Use Date & Time Node\n- Use Get Event Node\n\nRules:\n- For today: start from current time + 1 minute\n- For future: start from 12:00 AM\n\nReply format:\n“Available slots on [date]: [times]”\n\nKeep it short and clear\n\n-------------------------------------\n\n7. Accuracy Rules\n\n- Always check availability before booking\n- Never double-book\n- Never skip required details\n- Never save incomplete data\n-never forget to send email to client\n\n   \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -256,
+        -80
+      ],
+      "id": "829f62dd-2f29-45cb-bafd-03081f2b139c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "mianrehan05911@gmail.com",
+          "mode": "list",
+          "cachedResultName": "mianrehan05911@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        160
+      ],
+      "id": "7aa19f6a-bd9a-4ced-a48f-91e2cb3a2803",
+      "name": "creat",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "igef1wZylS3nHwWX",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "mianrehan05911@gmail.com",
+          "mode": "list",
+          "cachedResultName": "mianrehan05911@gmail.com"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        160
+      ],
+      "id": "6431c56a-5586-4aab-9372-b3478a3d3fe1",
+      "name": "search",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "TT829c8PK5lATF7r",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "outputFieldName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Output_Field_Name', ``, 'string') }}",
+        "options": {
+          "timezone": "Asia/Karachi"
+        }
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        160
+      ],
+      "id": "4746a827-1166-49a6-9164-112f6b3a4dc0",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        -64
+      ],
+      "id": "ac1af0ae-3a71-46d2-93d9-f4df6d106283",
+      "name": "Telegram Trigger",
+      "webhookId": "29ccfe0f-0c1a-439c-84f2-744b17ba3789",
+      "credentials": {
+        "telegramApi": {
+          "id": "UUvEZ315vvfmGIfo",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        -64
+      ],
+      "id": "a8aadae8-4a80-4569-a111-ea6d833f3659",
+      "name": "Send a text message",
+      "webhookId": "ce19774f-08d4-4436-9129-28047b8fd940",
+      "credentials": {
+        "telegramApi": {
+          "id": "UUvEZ315vvfmGIfo",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        160
+      ],
+      "id": "2e82ab7a-d588-40d1-93ad-cde8833a9661",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "mtUyYBaI2Qk2pvfo",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mianrehan05911@gmail.com",
+        "subject": "New Appointment",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        176
+      ],
+      "id": "c6690574-4ce5-4e18-9594-1c26796b4eca",
+      "name": "Send a message in Gmail1",
+      "webhookId": "2cd0a9bc-6037-49dc-a1b2-1479ddda6497",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cX7LjsWnppQ3s3Fh",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        160
+      ],
+      "id": "95f79f87-115e-49ce-ae24-793d6ba820aa",
+      "name": "Send a message in Gmail",
+      "webhookId": "bcc73d14-8d3c-496b-af33-fa5b12324821",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cX7LjsWnppQ3s3Fh",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Append or update row in sheet in Google Sheets",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1jSPI7txw6gxuUkhcGiK8xjgG1UEsggTq7j8cYfPqXpM",
+          "mode": "list",
+          "cachedResultName": "Appointment booking detail",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jSPI7txw6gxuUkhcGiK8xjgG1UEsggTq7j8cYfPqXpM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jSPI7txw6gxuUkhcGiK8xjgG1UEsggTq7j8cYfPqXpM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "contact": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('contact', ``, 'string') }}",
+            "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('name__using_to_match_', ``, 'string') }}",
+            "reason": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('reason', ``, 'string') }}",
+            "date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('date', ``, 'string') }}",
+            "time": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('time', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "name"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contact",
+              "displayName": "contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        160
+      ],
+      "id": "0e54402e-f841-4975-a122-1c386ac0ba5f",
+      "name": "Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rz3bHhsD7cIfQ3OT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        160
+      ],
+      "id": "6481292e-60c3-406e-9c5c-1ca1c38902e5",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "creat": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheet": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "47738d00-0c9f-415c-8420-d4e0c6061222",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a8dab766bab3092257fe17bd89ef9d545614a93ca6cd8533c0b286ec093ae9e4"
+  },
+  "id": "EJS5pqlDla99KrI8",
+  "tags": []
+}
