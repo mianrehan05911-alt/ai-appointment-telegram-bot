@@ -1,102 +1,152 @@
-# 🤖 Telegram Appointment Booking Automation (n8n)
+# 🤖 AI Hospital Appointment Booking Bot — n8n
 
-## 📌 Overview
-This project is an end-to-end automation system built using **n8n** that connects Telegram with Google Sheets, Google Calendar, and Gmail.
-
-It automates the complete appointment booking process — from user interaction to scheduling and confirmation — without any manual work.
-
----
-
-## ⚙️ What This System Does
-
-- Receives booking requests from Telegram
-- Collects user details through chat
-- Stores data in Google Sheets
-- Checks and creates events in Google Calendar
-- Sends confirmation emails via Gmail
+An intelligent, fully automated hospital appointment booking system built with 
+**n8n** that handles the complete patient journey via **Telegram** — from 
+checking availability to sending confirmation emails — with zero human 
+involvement after setup.
 
 ---
 
-## 🔧 Tools & Technologies
+## 🧠 Workflow Architecture
 
-- n8n (Workflow Automation)
-- Telegram Bot API
-- Google Sheets API
-- Google Calendar API
-- Gmail API
-
----
-
-## 🔄 Workflow Summary
-
-1. User sends message on Telegram bot  
-2. Bot collects required information (name, email, date, reason)  
-3. Data is processed inside n8n workflow  
-4. Information is stored in Google Sheets  
-5. Appointment is created in Google Calendar  
-6. Confirmation email is sent to client and doctor  
+The entire system runs inside a single n8n workflow with an AI Agent at its 
+core. The agent is powered by Groq LLM and has 7 tools connected to it — 
+calendar checker, calendar creator, Google Sheets logger, and dual Gmail 
+notifier. Every decision is made by the AI based on real-time calendar data.
 
 ---
 
-## 📂 Repository Structure
+## 🔄 How It Works — Step by Step
 
-workflow.json → Exported n8n workflow  
-README.md → Project documentation  
-telegram-booking-flow-1.png → Telegram chat flow (part 1)  
-telegram-booking-flow-2.png → Telegram chat flow (part 2)  
-google-sheets-log.png → Stored booking data  
-google-calendar-event.png → Created calendar event  
-confirmation-email-for-client.png → Email sent to client  
-confirmation-email-for-doctor.png → Email sent to doctor  
-
----
-
-## 🖼️ Screenshots Note
-
-Screenshots are uploaded individually in the repository root and show
-the complete working flow of the automation system.
-
----
-
-## 🎯 Purpose of Project
-
-- Learn real-world workflow automation using n8n  
-- Integrate multiple APIs into one system  
-- Build portfolio-ready automation projects  
-- Simulate production-level booking system  
+1. Patient sends any message to the Telegram bot
+2. AI Agent greets and asks for preferred date, time and purpose of visit
+3. Bot checks Google Calendar in real time for slot availability
+4. If slot is available — AI collects patient details step by step:
+   - Full name
+   - Contact number
+   - Email address
+   - Reason for visit
+5. AI shows complete summary and asks for confirmation (yes/no)
+6. **If patient confirms:**
+   - Creates event in Google Calendar with full patient details
+   - Saves record to Google Sheets with all fields
+   - Sends confirmation email to patient via Gmail
+   - Sends notification email to doctor via Gmail
+7. **If slot is unavailable:**
+   - Informs patient politely
+   - Suggests alternative times
+8. Bot blocks past-time bookings automatically
 
 ---
 
-## 📌 Key Highlights
+## 🖼️ Screenshots
 
-- Fully automated appointment booking system  
-- No manual intervention required after setup  
-- Multi-step Telegram conversational flow  
-- Real-time calendar conflict handling  
-- Automated email notifications  
+### Telegram — Booking Flow (Part 1)
+![Telegram Booking Flow 1](telegram-booking-flow-1.png.jpg)
+
+### Telegram — Booking Flow (Part 2)
+![Telegram Booking Flow 2](telegram-booking-flow-2.png.jpg)
+
+### Google Calendar — Appointment Created
+![Google Calendar Event](google-calendar-event.png)
+
+### Google Sheets — Patient Records Log
+![Google Sheets Log](google-sheets-log.png)
+
+### Gmail — Confirmation Email to Patient
+![Client Email](confirmation-email-for%20client.png.png)
+
+### Gmail — Notification Email to Doctor
+![Doctor Email](confirmation-email-for%20doctor.png.png)
 
 ---
 
-## 🚀 How to Use
+## 🛠️ Tech Stack
 
-1. Import `workflow.json` into n8n  
-2. Connect credentials:
-   - Telegram Bot
-   - Google Sheets
-   - Google Calendar
-   - Gmail  
-3. Activate workflow  
-4. Start chatting with Telegram bot  
+| Tool | Purpose |
+|------|---------|
+| n8n | Core workflow automation engine |
+| Groq LLM | AI brain — handles conversation and decisions |
+| Telegram Bot API | Patient-facing chat interface |
+| Google Calendar API | Availability check + appointment creation |
+| Google Sheets API | Patient records database |
+| Gmail API | Dual email notifications (patient + doctor) |
+| Prompt Engineering | Conversation flow and response design |
 
 ---
 
-## 🏁 Conclusion
+## ✨ Key Features
 
-This project demonstrates a real-world automation pipeline where multiple services
-are connected into a single intelligent workflow using n8n.
+- ✅ Real-time Google Calendar availability check before booking
+- ✅ Blocks past-time bookings automatically
+- ✅ Multi-step conversational flow — natural chat experience
+- ✅ Collects all 4 required fields before confirming
+- ✅ Creates calendar event with complete patient info
+- ✅ Saves every booking to Google Sheets automatically
+- ✅ Dual email system — patient gets confirmation, doctor gets notification
+- ✅ Per-user conversation memory (last 50 messages)
+- ✅ Asia/Karachi timezone support
 
-It is designed as a portfolio project to showcase automation, API integration,
-and workflow engineering skills.
+---
+
+## 🤖 AI Agent Tools
+
+The AI Agent has 7 tools it can call at any time:
+
+| Tool | Type | What It Does |
+|------|------|-------------|
+| Date & Time | DateTime | Gets current time in Asia/Karachi timezone |
+| search | Google Calendar (read) | Checks existing events to prevent double booking |
+| creat | Google Calendar (write) | Creates confirmed appointment event |
+| Sheet | Google Sheets | Saves patient record with all details |
+| Gmail — Patient | Gmail Tool | Sends confirmation email to patient |
+| Gmail — Doctor | Gmail Tool | Sends notification email to doctor |
+| Telegram Reply | Telegram | Sends response back to patient |
+
+---
+
+## 🗂️ Google Sheets Structure
+
+**Columns saved for every booking:**
+
+| Name | Contact | Email | Reason | Date | Time |
+|------|---------|-------|--------|------|------|
+| Abdullah | 0346525724 | email@gmail.com | Full body checkup | 2026-05-03 | 11:00 |
+
+---
+
+---
+
+## 📦 Setup Instructions
+
+1. Import `workflow.json` into your n8n instance
+2. Connect the following credentials:
+   - Telegram Bot token (create via BotFather)
+   - Google Calendar OAuth2
+   - Google Sheets OAuth2
+   - Gmail OAuth2
+   - Groq API key (free at console.groq.com)
+3. Update your Google Sheet ID in the Sheet node
+4. Update doctor email address in the Gmail doctor node
+5. Set timezone to Asia/Karachi in DateTime node
+6. Activate the workflow
+7. Open Telegram, find your bot and send any message
+
+---
+
+## 🎯 Purpose
+
+This project was built to demonstrate real-world automation skills including:
+- AI Agent design with multiple tool integrations
+- Real-time API data fetching and decision making
+- Multi-API workflow engineering
+- Prompt engineering for natural conversation design
+- End-to-end business process automation
+
+---
+
 ## 👤 Author
-**Mian Rehan** — AI Automation Developer  
-[LinkedIn](https://www.linkedin.com/in/muhammad-rehan-n8n/) | [GitHub](https://github.com/mianrehan05911-alt)
+
+**Mian Rehan** — AI Automation Developer
+[LinkedIn](https://www.linkedin.com/in/muhammad-rehan/) | 
+[GitHub](https://github.com/mianrehan05911-alt)
