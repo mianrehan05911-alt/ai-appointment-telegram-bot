@@ -8,13 +8,16 @@ involvement after setup.
 ---
 
 ## 🧠 Workflow Architecture
+--
+![n8n Workflow Canvas](n8n-workflow-canvas.jpg.png)
 
 The entire system runs inside a single n8n workflow with an AI Agent at its 
 core. The agent is powered by Groq LLM and has 7 tools connected to it — 
 calendar checker, calendar creator, Google Sheets logger, and dual Gmail 
 notifier. Every decision is made by the AI based on real-time calendar data.
 
----
+
+.
 
 ## 🔄 How It Works — Step by Step
 
